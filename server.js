@@ -12,10 +12,6 @@ require('dotenv').config();
 
 // Defined Routes
 
-app.get('/', (req, res) => {
-  res.send({ message: 'Works' });
-});
-
 app.get('/api/find_summoner/v1/:name', (request, response) => {
   league.summonerName = request.params.name;
   return league.getSummoner().then(() => {
