@@ -132,7 +132,7 @@ let league = {
   getChampion: function(index, championId) {
     return request({
       method: 'GET',
-      url: `http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/champion.json`
+      url: `https://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/champion.json`
     }).then(res => {
       const response = JSON.parse(res);
 
@@ -151,7 +151,7 @@ let league = {
   getItem: function(itemId) {
     return request({
       method: 'GET',
-      url: `http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/item.json`
+      url: `https://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/item.json`
     }).then(res => {
       const response = JSON.parse(res);
       const item = response.data[itemId];
@@ -163,7 +163,7 @@ let league = {
   getSpell: function(spellId) {
     return request({
       method: 'GET',
-      url: `http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/summoner.json`
+      url: `https://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/summoner.json`
     }).then(res => {
       const response = JSON.parse(res);
 
