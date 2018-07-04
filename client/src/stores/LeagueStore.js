@@ -1,5 +1,4 @@
 import { observable, action, flow, runInAction } from 'mobx';
-const _ = require('lodash');
 
 // import { Collection, parse, Schema } from 'mobx-models';
 
@@ -137,15 +136,11 @@ class LeagueStore {
     if (itemId in this.items) return true;
     this.state = 'pending';
     try {
-      const response = await fetch(
-        `http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/item.json`
-      );
+      const response = await fetch(`/api/find_item/v1/${itemId}`);
       const body = await response.json();
 
       runInAction(() => {
-        const result = body.data[itemId];
-
-        this.items[itemId] = result;
+        this.items[itemId] = body.item;
         this.state = 'done';
       });
     } catch (error) {
@@ -161,19 +156,11 @@ class LeagueStore {
     if (spellId in this.spells) return true;
     this.state = 'pending';
     try {
-      const response = await fetch(
-        `http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/summoner.json`
-      );
+      const response = await fetch(`/api/find_spell/v1/${spellId}`);
       const body = await response.json();
 
       runInAction(() => {
-        const result = _.find(body.data, function(obj) {
-          if (obj.key === spellId.toString()) {
-            return obj;
-          }
-        });
-
-        this.spells[spellId] = result;
+        this.spells[spellId] = body.spell;
         this.state = 'done';
       });
     } catch (error) {

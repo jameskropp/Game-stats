@@ -39,6 +39,18 @@ app.get('/api/match_history/v1/:accountId/:endIndex', (request, response) => {
   });
 });
 
+app.get('/api/find_item/v1/:itemId', (request, response) => {
+  return league.getItem(request.params.itemId).then(res => {
+    response.send({ item: res });
+  });
+});
+
+app.get('/api/find_spell/v1/:spellId', (request, response) => {
+  return league.getSpell(request.params.spellId).then(res => {
+    response.send({ spell: res });
+  });
+});
+
 // External API Calls
 
 let league = {
@@ -133,6 +145,35 @@ let league = {
       let match = league.history.matches[index];
       match.championDetails = result;
       return match;
+    });
+  },
+
+  getItem: function(itemId) {
+    return request({
+      method: 'GET',
+      url: `http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/item.json`
+    }).then(res => {
+      const response = JSON.parse(res);
+      const item = response.data[itemId];
+
+      return item;
+    });
+  },
+
+  getSpell: function(spellId) {
+    return request({
+      method: 'GET',
+      url: `http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/summoner.json`
+    }).then(res => {
+      const response = JSON.parse(res);
+
+      const result = _.find(response.data, function(obj) {
+        if (obj.key === spellId.toString()) {
+          return obj;
+        }
+      });
+
+      return result;
     });
   }
 };
